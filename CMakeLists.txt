@@ -30,17 +30,20 @@ endif()
 
 find_package(libhal-$ENV{LIBHAL_PLATFORM_LIBRARY} REQUIRED CONFIG)
 find_package(libhal-util REQUIRED CONFIG)
+find_package(libhal-sensor REQUIRED CONFIG)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
     platforms/$ENV{LIBHAL_PLATFORM}.cpp
+    application/mpu-demo.cpp
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE -g -Wall -Wextra --save-temps)
 target_include_directories(${PROJECT_NAME} PUBLIC include .)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     libhal::$ENV{LIBHAL_PLATFORM_LIBRARY}
-    libhal::util)
+    libhal::util
+    libhal::sensor)
 
 libhal_post_build(${PROJECT_NAME})
 libhal_disassemble(${PROJECT_NAME})

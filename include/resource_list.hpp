@@ -20,6 +20,8 @@
 #include <libhal/output_pin.hpp>
 #include <libhal/serial.hpp>
 #include <libhal/steady_clock.hpp>
+#include <libhal/i2c.hpp>
+#include <libhal-soft/bit_bang_i2c.hpp>
 
 struct resource_list
 {
@@ -35,6 +37,7 @@ struct resource_list
   std::optional<hal::steady_clock*> clock;
   // Initialize 3rd to support logging error messages
   std::optional<hal::serial*> console;
+  std::optional<hal::i2c*> i2c;
 };
 
 /**

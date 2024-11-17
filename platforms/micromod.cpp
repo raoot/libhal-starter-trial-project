@@ -26,4 +26,5 @@ void initialize_platform(resource_list& p_list)
   p_list.status_led = &hal::micromod::v1::led();
   p_list.clock = &hal::micromod::v1::uptime_clock();
   p_list.console = &hal::micromod::v1::console(hal::buffer<128>);
+  p_list.i2c = &hal::micromod::v1::i2c();
 }
