@@ -54,7 +54,7 @@ resource_list resources{};
   }
 }
 
-void application();
+void application(resource_list p_resources);
 
 int main()
 {
@@ -66,7 +66,7 @@ int main()
   initialize_platform(resources);
 
   try {
-    application();
+    application(resources);
   } catch (std::bad_optional_access const& e) {
     if (resources.console) {
       hal::print(*resources.console.value(),
@@ -79,7 +79,7 @@ int main()
   std::terminate();
 }
 
-void application()
+/*void application()
 {
   using namespace std::chrono_literals;
 
@@ -110,4 +110,4 @@ void application()
   hal::delay(clock, 100ms);
 
   resources.reset();
-}
+}*/

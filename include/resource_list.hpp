@@ -22,6 +22,7 @@
 #include <libhal/steady_clock.hpp>
 #include <libhal/i2c.hpp>
 #include <libhal-soft/bit_bang_i2c.hpp>
+#include <libhal-actuator/rc_servo.hpp>
 
 struct resource_list
 {
@@ -38,7 +39,8 @@ struct resource_list
   // Initialize 3rd to support logging error messages
   std::optional<hal::serial*> console;
   std::optional<hal::i2c*> i2c;
-};
+  std::optional<hal::pwm*> pwm;
+};  
 
 /**
  * @brief Initializes the target platform and the resource list
