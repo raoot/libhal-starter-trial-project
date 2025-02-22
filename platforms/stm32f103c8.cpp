@@ -18,7 +18,7 @@
 #include <libhal-arm-mcu/stm32f1/output_pin.hpp>
 #include <libhal-arm-mcu/stm32f1/uart.hpp>
 #include <libhal-arm-mcu/system_control.hpp>
-
+#include <libhal-util/bit_bang_i2c.hpp>
 #include <resource_list.hpp>
 
 void initialize_platform(resource_list& p_list)
@@ -36,10 +36,28 @@ void initialize_platform(resource_list& p_list)
   static hal::stm32f1::output_pin led('C', 13);
   p_list.status_led = &led;
 
+  static hal::stm32f1::output_pin sda_output_pin('A', 0);
+  static hal::stm32f1::output_pin scl_output_pin('A', 15);
+
+  sda_output_pin.configure({
+    .resistor = hal::pin_resistor::pull_up,
+    .open_drain = true,
+  });
+  scl_output_pin.configure({
+    .resistor = hal::pin_resistor::pull_up,
+    .open_drain = true,
+  });
+  static hal::bit_bang_i2c::pins bit_bang_pins{
+    .sda = &sda_output_pin,
+    .scl = &scl_output_pin,
+  };
+  static hal::bit_bang_i2c bit_bang_i2c(bit_bang_pins, counter);
+  p_list.i2c = &bit_bang_i2c;
+
   static hal::stm32f1::uart uart1(hal::port<1>,
-                                  hal::buffer<128>,
+                                  hal::buffer<1024>,
                                   hal::serial::settings{
-                                    .baud_rate = 115200,
+                                    .baud_rate = 9600,
                                   });
   p_list.console = &uart1;
 }

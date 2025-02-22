@@ -21,25 +21,29 @@
 #include <libhal/serial.hpp>
 #include <libhal/steady_clock.hpp>
 #include <libhal/i2c.hpp>
-#include <libhal-soft/bit_bang_i2c.hpp>
+#include <libhal/accelerometer.hpp>
 #include <libhal-actuator/rc_servo.hpp>
+#include <libhal-expander/pca9685.hpp>
 
 struct resource_list
 {
-  /// Initialized 1st
+  /// initialized 1st
   hal::callback<void()> reset = +[] {
     while (true) {
       continue;
     }
   };
-  // Both status_led and clock are required in order to generate the terminate
-  // blink pattern.
+  // both status_led and clock are required in order to generate the terminate
+  // blink pattern
   std::optional<hal::output_pin*> status_led;
   std::optional<hal::steady_clock*> clock;
-  // Initialize 3rd to support logging error messages
+  // initialize 3rd to support logging error messages
   std::optional<hal::serial*> console;
   std::optional<hal::i2c*> i2c;
   std::optional<hal::pwm*> pwm;
+
+  std::optional<hal::output_pin*> G0_SDA;
+  std::optional<hal::output_pin*> G1_SCL;
 };  
 
 /**
@@ -49,4 +53,6 @@ struct resource_list
  * run properly. The initialize platform library should initialize each resource
  * in the resoure list.
  */
-void initialize_platform(resource_list& p_list);
+ 
+ void initialize_platform(resource_list& p_list);
+ void pca_setup(resource_list& p_list);
